@@ -1,7 +1,5 @@
-from importlib.resources import path
-from charset_normalizer import detect
 from flask import Flask, request, Response
-from RequestUtils import decodeImage
+from RequestUtils import decodeImage, convertDfToJson
 from Detector import Detector
 import numpy as np
 import cv2
@@ -24,7 +22,7 @@ def test():
             img = detector.paintDetections(img, df)
             cv2.imwrite(pathToSave, img)
         
-        return Response(status = 200)
+        return convertDfToJson(df)
 
     else:
         print("shit")
