@@ -1,7 +1,7 @@
-Как этим пользоваться  
-1. открываем консоль и пишем `pip install flask` , `pip install numpy` и `pip install opencv-python`   
-2. в консоли зовем `python server.py` и эта штука слушает на 127.0.0.1:5000
-3. каким то образом отправляем post запрос на `http://127.0.0.1:5000/proccessImage` в котором в json есть поле image  
-   и оно содержит байты картинки закодированные base64  
-4. Предварительно изменив путь до места сохранения смотрим, что она там очутилась и это та же картинка, что мы скинули  
+## How to use  
+1. Run `pip install flask numpy opencv-python`   
+2. Run `python server.py` - server starts at 127.0.0.1:5000
+3. Send request to `http://127.0.0.1:5000/proccessImage` with `image` field with base64 image  
+4. Receive lego parts ids and borders
 
+Models available at [link](https://drive.google.com/drive/folders/1MCHOniZk3NK3ZDy8zi1ulKDH_fxO8I-q?usp=sharing)
