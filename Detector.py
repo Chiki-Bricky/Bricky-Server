@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import cv2
 
+IMG_SIZE = 640
 class Detector():
 
     def __init__(self, pathToModel):
@@ -10,15 +11,15 @@ class Detector():
         self.model.eval()
     
     def recogize(self, img):
-        img = cv2.resize(img, (1024,1024))
+        img = cv2.resize(img, (IMG_SIZE,IMG_SIZE))
         with torch.no_grad():
             preds = self.model(img)
         return preds
     
     def processPreds(self, preds):
         df = preds.pandas().xyxy[0]
-        df = df[df.confidence>0.5] 
-        df = df.drop(columns =["confidence","name","class"])
+        df = df[df.confidence>0.1] 
+        # df = df.drop(columns =["confidence","name","class"])
         return df
     
     def __call__(self, img):
@@ -26,7 +27,7 @@ class Detector():
     
     def paintDetections(self, img, df):
         coords = df.to_numpy()
-        img = cv2.resize(img, (1024,1024))
+        img = cv2.resize(img, (IMG_SIZE,IMG_SIZE))
         a,_, = coords.shape
         for i in range(a):
             color = (0,0,255)

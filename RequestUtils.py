@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 import base64
 from flask import jsonify
+from Detector import IMG_SIZE
 # decode received image from base64
 def decodeImage(received):
     jpg_original = base64.b64decode(received)
@@ -13,15 +14,16 @@ def decodeImage(received):
 
 
 #TODO as we dont yet have classes they will be kinda random
-def convertDfToJson(df):
+def convertDfToJson(df, shape):
     res = []
     # we can allow iterrows for now but it's really slow though 
-    for i, row in df.iterrows():
+    for _, row in df.iterrows():
         tmp = {}
-        tmp["xmin"] = int(row["xmin"])
-        tmp["ymin"] = int(row["ymin"])
-        tmp["xmax"] = int(row["xmax"])
-        tmp["ymax"] = int(row["ymax"])
-        tmp['class'] = i
+        tmp["xmin"] = round(float(row["xmin"]) / IMG_SIZE, 3)
+        tmp["ymin"] = round(float(row["ymin"]) / IMG_SIZE, 3)
+        tmp["xmax"] = round(float(row["xmax"]) / IMG_SIZE, 3)
+        tmp["ymax"] = round(float(row["ymax"]) / IMG_SIZE, 3)
+        tmp['class'] = row["name"]
+        tmp['confidence'] = round(row["confidence"], 3)
         res.append(tmp)       
     return jsonify({"bricks": res })

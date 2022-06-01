@@ -6,8 +6,8 @@ import cv2
 import os 
 
 app = Flask(__name__)
-pathToSave = "C:\\Users\\vvpvo\\Desktop\\nsu\\Bricky\\server\\output.jpg"
-pathToModel = os.path.join(os.getcwd(),os.path.join('models','best.pt'))
+pathToSave = "output.jpg"
+pathToModel = os.path.join(os.getcwd(),os.path.join('models','train_val_2.pt'))
 DEBUG = True
 
 detector = Detector(pathToModel)
@@ -17,12 +17,14 @@ def test():
     r = request.json
     if r is not None and 'image' in r.keys():
         img = decodeImage(r["image"])
+        shape = img.shape
         df = detector(img)
         if DEBUG:
             img = detector.paintDetections(img, df)
             cv2.imwrite(pathToSave, img)
         
-        return convertDfToJson(df)
+        print(img.shape)
+        return convertDfToJson(df, shape)
 
     else:
         print("shit")
@@ -30,4 +32,5 @@ def test():
     
 
 # start flask app
-app.run(host="127.0.0.1", port=5000)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000)
